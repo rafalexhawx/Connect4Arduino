@@ -8,11 +8,24 @@ const int GREEN = 9;
 
 const int MATRIX_SIZE = 8;
 
-const char COLORS_NAMES = {'R', 'G', 'O', 'B'};
-const bool COLORD_BOOLS = {{true,  false},
-                           {false, true},
-                           {true,  true},
-                           {false, false}};
+const char COLORS_NAMES[] = {'R', 'G', 'O', ' '};
+const bool COLORS_BOOLS[][2] = {{true,  false},
+                                {false, true},
+                                {true,  true},
+                                {false, false}};
+
+const char grid[8][8] =
+        {
+                {' ', 'R', 'R', ' ', 'R', 'R', ' ', ' '},
+                {'R', 'R', 'R', 'R', 'R', 'R', 'R', ' '},
+                {'R', 'R', 'R', 'R', 'R', 'R', 'R', ' '},
+                {' ', 'R', 'R', 'R', 'R', 'R', ' ', ' '},
+                {' ', ' ', 'R', 'R', 'R', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'R', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+        };
+
 void setup() {
     pinMode(LATCH, OUTPUT);
     pinMode(SHIFT, OUTPUT);
@@ -30,25 +43,21 @@ void setup() {
 void loop() {
     for (int x = 0; x < MATRIX_SIZE; x++)
         for (int y = 0; y < MATRIX_SIZE; y++) {
-            if (grid[x][y] == 'R') draw(x, y);
+            draw(x, y, charToArray(grid[x][y]));
             delay(10);
         }
 }
 
-void draw(int x, int y, bool colors[]) {
+void draw(int x, int y, bool color[]) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
-      if(i == y) {
-        digitalWrite(GREEN, colors[1]);
-        digitalWrite(RED, colors[0]);
-      }
-        if(i == x) {
-          digitalWrite(ROW, LOW);
-        }
+        if (i == x) digitalWrite(ROW, LOW);
+        if (i == y) digitalWrite(RED, HIGH);
+
         pulse(SHIFT, true);
+
         digitalWrite(ROW, HIGH);
         digitalWrite(RED, LOW);
         digitalWrite(GREEN, LOW);
-        
     }
     pulse(LATCH, true);
 }
@@ -58,12 +67,13 @@ void pulse(int pin, bool reversed) {
     digitalWrite(pin, reversed);
 }
 
-
-
-void draw_board(board) {
-  for(int i = 0; i < board.length();i++) {
-    for(int j = 0; j < board.length(); j++) {
-      draw(i, j, chartoArray(board[i][j]));
+bool *charToArray(char c) {
+    bool result[2] = {false, false};
+    for (int i = 0; i < sizeof(COLORS_NAMES); i++) {
+        if (COLORS_NAMES[i] == c) {
+            result = COLORS_BOOLS[i];
+            break;
+        }
     }
-  }
+    return result;
 }
