@@ -48,20 +48,19 @@ void loop() {
         }
 }
 
-void draw(int x, int y, bool red, bool green) {
+void draw(int x, int y, bool color[]) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
-      if(i == x) {
-        digitalWrite(GREEN, !green);
-        digitalWrite(RED, !red);
-      }
-        if(i == y) {
-          digitalWrite(ROW, LOW);
+        if (i == x) digitalWrite(ROW, LOW);
+        if (i == y) {
+          digitalWrite(RED, color[0]);
+          digitalWrite(GREEN, color[1]);
         }
+
         pulse(SHIFT, true);
+
         digitalWrite(ROW, HIGH);
         digitalWrite(RED, LOW);
         digitalWrite(GREEN, LOW);
-        
     }
     pulse(LATCH, true);
 }
