@@ -35,11 +35,11 @@ void loop() {
         }
 }
 
-void draw(int x, int y, bool red, bool green) {
+void draw(int x, int y, bool colors[]) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
       if(i == y) {
-        digitalWrite(GREEN, green);
-        digitalWrite(RED, red);
+        digitalWrite(GREEN, colors[1]);
+        digitalWrite(RED, colors[0]);
       }
         if(i == x) {
           digitalWrite(ROW, LOW);
@@ -63,8 +63,7 @@ void pulse(int pin, bool reversed) {
 void draw_board(board) {
   for(int i = 0; i < board.length();i++) {
     for(int j = 0; j < board.length(); j++) {
-      bool colors{2} = chartoArray(board[i][j]);
-      draw(i, j, colors[0], colors[1]);
+      draw(i, j, chartoArray(board[i][j]));
     }
   }
 }
