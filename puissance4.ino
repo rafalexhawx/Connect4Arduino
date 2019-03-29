@@ -13,19 +13,6 @@ const bool COLORD_BOOLS = {{true,  false},
                            {false, true},
                            {true,  true},
                            {false, false}};
-
-const char grid[8][8] =
-        {
-                {' ', 'R', 'R', ' ', 'R', 'R', ' ', ' '},
-                {'R', 'R', 'R', 'R', 'R', 'R', 'R', ' '},
-                {'R', 'R', 'R', 'R', 'R', 'R', 'R', ' '},
-                {' ', 'R', 'R', 'R', 'R', 'R', ' ', ' '},
-                {' ', ' ', 'R', 'R', 'R', ' ', ' ', ' '},
-                {' ', ' ', ' ', 'R', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-        };
-
 void setup() {
     pinMode(LATCH, OUTPUT);
     pinMode(SHIFT, OUTPUT);
@@ -48,15 +35,20 @@ void loop() {
         }
 }
 
-void draw(int x, int y) {
+void draw(int x, int y, bool red, bool green) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
-        if (i == x) digitalWrite(ROW, LOW);
-        if (i == y) digitalWrite(RED, HIGH);
-
+      if(i == x) {
+        digitalWrite(GREEN, !green);
+        digitalWrite(RED, !red);
+      }
+        if(i == y) {
+          digitalWrite(ROW, LOW);
+        }
         pulse(SHIFT, true);
-
         digitalWrite(ROW, HIGH);
         digitalWrite(RED, LOW);
+        digitalWrite(GREEN, LOW);
+        
     }
     pulse(LATCH, true);
 }
@@ -66,6 +58,13 @@ void pulse(int pin, bool reversed) {
     digitalWrite(pin, reversed);
 }
 
-bool charToArray(char c) {
-    return {false, false}
+
+
+void draw_board(board) {
+  for(int i = 0; i < board.length();i++) {
+    for(int j = 0; j < board.length(); j++) {
+      bool colors{2} = chartoArray(board[i][j]);
+      draw(i, j, colors[0], colors[1]);
+    }
+  }
 }
