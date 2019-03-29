@@ -37,11 +37,11 @@ void loop() {
 
 void draw(int x, int y, bool red, bool green) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
-      if(i == x) {
-        digitalWrite(GREEN, !green);
-        digitalWrite(RED, !red);
+      if(i == y) {
+        digitalWrite(GREEN, green);
+        digitalWrite(RED, red);
       }
-        if(i == y) {
+        if(i == x) {
           digitalWrite(ROW, LOW);
         }
         pulse(SHIFT, true);
