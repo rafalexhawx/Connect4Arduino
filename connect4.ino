@@ -15,8 +15,13 @@ const int bluled = 4;
 
 const int MATRIX_SIZE = 8;
 
-char COLORS_NAMES[] = {'R', 'G', 'O', ' '};
-bool COLORS_BOOLS[][2] = {{true,  false},
+int turn = 0;
+
+String who_turn[2] ={"Red plays", "Green plays"};
+char players[2] = {'R', 'G'};
+
+char COLORS_NAMES[4] = {'R', 'G', 'O', ' '};
+bool COLORS_BOOLS[4][2] = {{true,  false},
                           {false, true},
                           {true,  true},
                           {false, false}};
@@ -41,7 +46,6 @@ void setup() {
     pinMode(ROW, OUTPUT);
     pinMode(RED, OUTPUT);
     pinMode(GREEN, OUTPUT);
-    pinMode(5, INPUT);
     pinMode(redled, OUTPUT);
     pinMode(greled, OUTPUT);
     pinMode(bluled, OUTPUT);
@@ -50,36 +54,42 @@ void setup() {
     digitalWrite(RESET, HIGH);
     Serial.begin(9600);
     draw_grid();
-    while(digitalRead(5) == LOW) {
-      lcd.clear();
-      lcd.setCursor(4, 0);
-      lcd.print("Connect4");
-      lcd.setCursor(0,1);
-      lcd.print("On Arduino Nano");
-      set_status(1,0,0);
-      delay(3000);
-      lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print("HardwareSoftware");
-      lcd.setCursor(1,1);
-      lcd.print("By Alex ROBIC");
-      set_status(0,1,0);
-      delay(3000);
-      lcd.clear();
-      set_status(0,0,1);
-      lcd.setCursor(4,0);
-      lcd.print("Software   *");
-      lcd.setCursor(1,1);
-      lcd.print("By Irwin Madet");
-      delay(3000);
-    }
+    credits();      
     lcd.clear();
     set_status(1,1,1);
     lcd.setCursor(3,0);
     lcd.print("Game start");
-    grid[4][2] = 'G';
-    animate('R', 5);
+    delay(1000);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Red player starts");
+    set_status(1, 0, 0);
 }
+
+void credits() {
+  lcd.clear();
+  lcd.setCursor(4, 0);
+  lcd.print("Connect4");
+  lcd.setCursor(0,1);
+  lcd.print("On Arduino Nano");
+  set_status(1,0,0);
+  delay(3000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("HardwareSoftware");
+  lcd.setCursor(1,1);
+  lcd.print("By Alex ROBIC");
+  set_status(0,1,0);
+  delay(3000);
+  lcd.clear();
+  set_status(0,0,1);
+  lcd.setCursor(4,0);
+  lcd.print("Software   *");
+  lcd.setCursor(1,1);
+  lcd.print("By Irwin MADET");
+  delay(3000);
+  
+ }
 
 void pulse(int pin, bool reversed) {
     digitalWrite(pin, !reversed);
@@ -145,13 +155,14 @@ bool *charToArray(char c) {
 
 void animate(char color, int row) {
   int i = 2;
+  if(grid[i][row] == ' ') {
   grid[i][row] = color;
-  //for(int j = 0; j < 6; j++
   while((grid[i+1][row] == ' ') and (i <= 7)) {
-    draw_frames(50);
+    draw_frames(25);
     i += 1;
     grid[i-1][row] = ' ';
     grid[i][row] = color;
+  }
   }
 }
 
@@ -162,6 +173,27 @@ void draw_frames(int number) {
   }
 }
 
+bool check_diagonals_sw_ne() {/*Irwin's job, too fucking lazy to do this shit*/ }
+bool check_diagonals_se_nw() {/*to finish by irwin*/}
+bool check_lines() {/*Guess who's gonna do it? That's right, you*/}
+bool check_columns() {/*I like trains*/}
+bool there_is_winner() {/*to finish*/}
+
 void loop() {
-    draw_grid();       
+    draw_grid();
+    int x = analogRead(0);
+    int r = button_to_row(x);
+    if(r != 0) {
+      char current_player = players[turn%2];
+      if(current_player == 'R') {set_status(1, 0, 0);} else {set_status(0, 1, 0);}
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print(who_turn[(turn+1)%2]);
+      lcd.setCursor(0, 1);
+      lcd.print(r);
+      animate(current_player, r-1);
+      turn += 1;
+    } else {
+      draw_frames(10);
+    }
 }
