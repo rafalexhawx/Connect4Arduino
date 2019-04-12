@@ -2,16 +2,16 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-#define LATCH 10;
-#define SHIFT 11;
-#define RESET 12;
-#define ROW 7;
-#define RED 8;
-#define GREEN 9;
+const int LATCH = 10;
+const int SHIFT = 11;
+const int RESET = 12;
+const int ROW = 7;
+const int RED = 8;
+const int GREEN = 9;
 
-#define R_LED 2;
-#define G_LED 3;
-#define B_LED 4;
+const int R_LED = 2;
+const int G_LED = 3;
+const int B_LED = 4;
 
 const int MATRIX_SIZE = 8;
 
