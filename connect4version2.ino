@@ -2,16 +2,16 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-const int LATCH = 10;
-const int SHIFT = 11;
-const int RESET = 12;
-const int ROW = 7;
-const int RED = 8;
-const int GREEN = 9;
+#define LATCH 10;
+#define SHIFT 11;
+#define RESET 12;
+#define ROW 7;
+#define RED 8;
+#define GREEN 9;
 
-const int redled = 2;
-const int greled = 3;
-const int bluled = 4;
+#define R_LED 2;
+#define G_LED 3;
+#define B_LED 4;
 
 const int MATRIX_SIZE = 8;
 
@@ -26,16 +26,7 @@ bool COLORS_BOOLS[4][2] = {{true,  false},
                           {true,  true},
                           {false, false}};
 
-char grid[8][8] = {
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-};
+char grid[8][8];
 
 void setup() {
     lcd.init();
@@ -46,9 +37,16 @@ void setup() {
     pinMode(ROW, OUTPUT);
     pinMode(RED, OUTPUT);
     pinMode(GREEN, OUTPUT);
-    pinMode(redled, OUTPUT);
-    pinMode(greled, OUTPUT);
-    pinMode(bluled, OUTPUT);
+    pinMode(R_LED, OUTPUT);
+    pinMode(G_LED, OUTPUT);
+    pinMode(B_LED, OUTPUT);
+
+    for (int i = 0; i < MATRIX_SIZE; i++) {
+        for (int j = 0; i < MATRIX_SIZE; i++) {
+            grid[i][j] = ' ';
+        }
+    }
+
     digitalWrite(ROW, LOW);
     digitalWrite(LATCH, LOW);
     digitalWrite(RESET, HIGH);
@@ -121,9 +119,9 @@ void draw_grid() {
 }
 
 void set_status(bool r, bool g, bool b) {
-  digitalWrite(redled, r);
-  digitalWrite(greled, g);
-  digitalWrite(bluled, b);
+  digitalWrite(R_LED, r);
+  digitalWrite(G_LED, g);
+  digitalWrite(B_LED, b);
 }
 
 int button_to_row(int av) {
@@ -183,8 +181,8 @@ void draw_frames(int number) {
 }
 
 bool check_diagonals_sw_ne(char player) {
-    for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 0; x <= 3; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x + i] != player)
                     break;
@@ -196,8 +194,8 @@ bool check_diagonals_sw_ne(char player) {
 }
 
 bool check_diagonals_se_nw(char player) {
-    for (int x = 3; x < 7; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 3; x <= 7; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x - i] != player)
                     break;
@@ -209,8 +207,8 @@ bool check_diagonals_se_nw(char player) {
 }
 
 bool check_lines(char player) {
-    for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 7; y++) {
+    for (int x = 0; x <= 3; x++) {
+        for (int y = 0; y <= 7; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y][x + i] != player)
                     break;
@@ -222,8 +220,8 @@ bool check_lines(char player) {
 }
 
 bool check_columns(char player) {
-    for (int x = 0; x < 7; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 0; x <= 7; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x] != player)
                     break;
@@ -236,9 +234,9 @@ bool check_columns(char player) {
 
 bool check_winner(char player) {
     return check_diagonals_se_nw(player) ||
-    check_diagonals_sw_ne(player) ||
-    check_lines(player) ||
-    check_columns(player);
+           check_diagonals_sw_ne(player) ||
+           check_lines(player) ||
+           check_columns(player);
 }
 
 void loop() {
