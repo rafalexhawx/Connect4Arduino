@@ -225,7 +225,12 @@ bool check_columns(char player) {
     return false;
 }
 
-bool check_winner() {/*to finish*/}
+bool check_winner(char player) {
+    return check_diagonals_se_nw(player) ||
+    check_diagonals_sw_ne(player) ||
+    check_lines(player) ||
+    check_columns(player)
+}
 
 void loop() {
     draw_grid();
