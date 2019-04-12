@@ -1,10 +1,10 @@
-const int LATCH = 10;
-const int SHIFT = 11;
-const int RESET = 12;
+#define LATCH 10
+#define SHIFT 11
+#define RESET 12
 
-const int ROW = 7;
-const int RED = 8;
-const int GREEN = 9;
+#define ROW 7
+#define RED 8
+#define GREEN 9
 
 const int MATRIX_SIZE = 8;
 
