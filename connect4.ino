@@ -26,16 +26,7 @@ bool COLORS_BOOLS[4][2] = {{true,  false},
                            {true,  true},
                            {false, false}};
 
-char grid[8][8] = {
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-};
+char grid[8][8];
 
 void setup() {
     lcd.init();
@@ -49,6 +40,13 @@ void setup() {
     pinMode(R_LED, OUTPUT);
     pinMode(G_LED, OUTPUT);
     pinMode(B_LED, OUTPUT);
+
+    for (int i = 0; i < MATRIX_SIZE; i++) {
+        for (int j = 0; i < MATRIX_SIZE; i++) {
+            grid[i][j] = ' ';
+        }
+    }
+
     digitalWrite(ROW, LOW);
     digitalWrite(LATCH, LOW);
     digitalWrite(RESET, HIGH);
@@ -227,9 +225,9 @@ bool check_columns(char player) {
 
 bool check_winner(char player) {
     return check_diagonals_se_nw(player) ||
-    check_diagonals_sw_ne(player) ||
-    check_lines(player) ||
-    check_columns(player)
+           check_diagonals_sw_ne(player) ||
+           check_lines(player) ||
+           check_columns(player);
 }
 
 void loop() {
