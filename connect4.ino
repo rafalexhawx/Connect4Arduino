@@ -172,8 +172,8 @@ void draw_frames(int number) {
 }
 
 bool check_diagonals_sw_ne(char player) {
-    for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 0; x <= 3; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x + i] != player)
                     break;
@@ -185,8 +185,8 @@ bool check_diagonals_sw_ne(char player) {
 }
 
 bool check_diagonals_se_nw(char player) {
-    for (int x = 3; x < 7; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 3; x <= 7; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x - i] != player)
                     break;
@@ -198,8 +198,8 @@ bool check_diagonals_se_nw(char player) {
 }
 
 bool check_lines(char player) {
-    for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 7; y++) {
+    for (int x = 0; x <= 3; x++) {
+        for (int y = 0; y <= 7; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y][x + i] != player)
                     break;
@@ -211,8 +211,8 @@ bool check_lines(char player) {
 }
 
 bool check_columns(char player) {
-    for (int x = 0; x < 7; x++) {
-        for (int y = 0; y < 2; y++) {
+    for (int x = 0; x <= 7; x++) {
+        for (int y = 0; y <= 2; y++) {
             for (int i = 0; i < 3; i++) {
                 if (grid[y + i][x] != player)
                     break;
