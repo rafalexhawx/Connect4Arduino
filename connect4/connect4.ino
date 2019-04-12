@@ -29,8 +29,6 @@ bool COLORS_BOOLS[4][2] = {{true,  false},
 char grid[8][8];
 
 void setup() {
-    Serial.begin(9600);
-  
     lcd.init();
     lcd.backlight();
     pinMode(LATCH, OUTPUT);
@@ -44,7 +42,7 @@ void setup() {
     pinMode(B_LED, OUTPUT);
 
     for (int i = 0; i < MATRIX_SIZE; i++) {
-        for (int j = 0; i < MATRIX_SIZE; i++) {
+        for (int j = 0; j < MATRIX_SIZE; j++) {
             grid[i][j] = ' ';
         }
     }
@@ -127,7 +125,7 @@ void set_status(bool r, bool g, bool b) {
 }
 
 int button_to_row(int av) {
-  if(av == 0 ) {
+  if(av <= 10 ) {
     return(1);
   } else if(678 <= av and av <= 682){
     return(2);
@@ -244,9 +242,7 @@ bool check_winner(char player) {
 void loop() {
     draw_grid();
     int x = analogRead(0);
-    Serial.println(x);
     int r = button_to_row(x);
-    Serial.println("Button:" + r);
     if(r != 0) {
       char current_player = players[(turn+1)%2];
       animate(current_player, r-1);
