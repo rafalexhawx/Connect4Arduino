@@ -199,7 +199,7 @@ bool check_diagonals_se_nw(char player) {
     return false;
 }
 
-bool check_lines() {
+bool check_lines(char player) {
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 7; y++) {
             for (int i = 0; i < 3; i++) {
@@ -212,7 +212,7 @@ bool check_lines() {
     return false;
 }
 
-bool check_columns() {
+bool check_columns(char player) {
     for (int x = 0; x < 7; x++) {
         for (int y = 0; y < 2; y++) {
             for (int i = 0; i < 3; i++) {
